@@ -15,4 +15,12 @@ public class Mecanico extends Persona{
         this.especializacion = especializacion;
         this.ordenAsignada = null;
     }
+
+    public double hacerPresupuesto(){
+        return 0;
+    }
+
+    public Orden realizarMantenimiento(){
+        return null;
+    }
 }

@@ -18,4 +18,7 @@ public class Cliente extends Usuario{
         this.ListaOrdenes = new LinkedList<>();
     }
 
+    public Orden realizarOrden(String instrucciones){
+        return null;
+    }
 }

@@ -16,4 +16,8 @@ public class Recepcionista extends Persona{
         super(nombre, cedula);
         clientesatendidos = new LinkedList<>();
     }
+
+    public void AtenderCliente(Cliente cliente){
+
+    }
 }

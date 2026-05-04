@@ -18,7 +18,7 @@ public class Usuario extends Persona{
         if (this.correo.equals(correo) && this.contrasenia.equals(contrasenia)){
             return this;
         }
-        return null;
+        throw new RuntimeException("Credenciales Incorrectas");
     }
 
 
