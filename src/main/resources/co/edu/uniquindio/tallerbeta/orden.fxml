@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.tallerbeta.controller.ordenController"
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-color: #1a1a2e;">
+
+    <!-- HEADER -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20"
+              style="-fx-background-color: #16213e; -fx-padding: 16 24 16 24;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 3);">
+            <Text text="🔧" style="-fx-font-size: 28;"/>
+            <VBox spacing="2">
+                <Text text="Taller BeTa"
+                      style="-fx-fill: #e94560; -fx-font-size: 20; -fx-font-weight: bold;"/>
+                <Text fx:id="lblBienvenida" text="Bienvenido"
+                      style="-fx-fill: #a8a8b3; -fx-font-size: 13;"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnCerrarSesion" text="Cerrar sesión" onAction="#cerrarSesion"
+                    style="-fx-background-color: transparent; -fx-text-fill: #e94560;
+                           -fx-border-color: #e94560; -fx-border-radius: 6;
+                           -fx-cursor: hand; -fx-padding: 6 16 6 16;"/>
+        </HBox>
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+        <HBox spacing="0">
+
+            <!-- PANEL IZQUIERDO: FORMULARIO -->
+            <VBox spacing="16" prefWidth="320"
+                  style="-fx-background-color: #16213e; -fx-padding: 28 24 28 24;
+                         -fx-border-color: #0f3460; -fx-border-width: 0 1 0 0;">
+
+                <Text text="Nueva Orden"
+                      style="-fx-fill: #ffffff; -fx-font-size: 17; -fx-font-weight: bold;"/>
+
+                <VBox spacing="6">
+                    <Text text="Descripción del problema"
+                          style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+                    <TextArea fx:id="txtInstrucciones"
+                              promptText="Describe el problema de tu vehículo..."
+                              prefRowCount="4" wrapText="true"
+                              style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                                     -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                                     -fx-border-radius: 6; -fx-background-radius: 6;
+                                     -fx-padding: 10;"/>
+                </VBox>
+
+                <Separator style="-fx-background-color: #0f3460;"/>
+
+                <Text text="Orden seleccionada"
+                      style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+
+                <VBox spacing="6">
+                    <Text text="ID" style="-fx-fill: #5a5a7a; -fx-font-size: 11;"/>
+                    <TextField fx:id="txtId" editable="false"
+                               style="-fx-background-color: #0a0a1a; -fx-text-fill: #5a5a7a;
+                                      -fx-border-color: #0f3460; -fx-border-radius: 6;
+                                      -fx-background-radius: 6; -fx-padding: 8;"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Text text="Estado" style="-fx-fill: #5a5a7a; -fx-font-size: 11;"/>
+                    <TextField fx:id="txtEstado" editable="false"
+                               style="-fx-background-color: #0a0a1a; -fx-text-fill: #5a5a7a;
+                                      -fx-border-color: #0f3460; -fx-border-radius: 6;
+                                      -fx-background-radius: 6; -fx-padding: 8;"/>
+                </VBox>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <!-- BOTONES CRUD -->
+                <VBox spacing="10">
+                    <Button fx:id="btnCrear" text="➕  Crear orden" onAction="#crearOrden"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #e94560; -fx-text-fill: white;
+                                   -fx-font-weight: bold; -fx-background-radius: 8;
+                                   -fx-cursor: hand; -fx-padding: 12 0 12 0; -fx-font-size: 13;"/>
+                    <HBox spacing="10">
+                        <Button text="✏️ Editar" onAction="#actualizarOrden"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                style="-fx-background-color: #0f3460; -fx-text-fill: #4fc3f7;
+                                       -fx-font-weight: bold; -fx-background-radius: 8;
+                                       -fx-cursor: hand; -fx-padding: 10 0 10 0;"/>
+                        <Button text="🗑️ Eliminar" onAction="#eliminarOrden"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                style="-fx-background-color: #0f3460; -fx-text-fill: #e94560;
+                                       -fx-font-weight: bold; -fx-background-radius: 8;
+                                       -fx-cursor: hand; -fx-padding: 10 0 10 0;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- PANEL DERECHO: TABLA -->
+            <VBox spacing="16" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color: #1a1a2e; -fx-padding: 28 24 28 24;">
+
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <Text text="Mis órdenes"
+                          style="-fx-fill: #ffffff; -fx-font-size: 17; -fx-font-weight: bold;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="txtBuscar" promptText="🔍  Buscar por estado..."
+                               prefWidth="220"
+                               style="-fx-background-color: #16213e; -fx-text-fill: #ffffff;
+                                      -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #0f3460;
+                                      -fx-border-radius: 20; -fx-background-radius: 20;
+                                      -fx-padding: 8 14 8 14;"/>
+                    <Button text="↻" onAction="#cargarOrdenes"
+                            style="-fx-background-color: #0f3460; -fx-text-fill: #4fc3f7;
+                                   -fx-background-radius: 50; -fx-cursor: hand;
+                                   -fx-font-size: 15; -fx-padding: 6 12 6 12;"/>
+                </HBox>
+
+                <TableView fx:id="tablaOrdenes" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #16213e; -fx-border-color: #0f3460;
+                                  -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="90"/>
+                        <TableColumn fx:id="colInstrucciones" text="Instrucciones" prefWidth="270"/>
+                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="110"/>
+                        <TableColumn fx:id="colMecanico" text="Mecánico" prefWidth="140"/>
+                    </columns>
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="10">
+                            <Text text="🔧" style="-fx-font-size: 40;"/>
+                            <Text text="No tienes órdenes registradas"
+                                  style="-fx-fill: #5a5a7a; -fx-font-size: 14;"/>
+                        </VBox>
+                    </placeholder>
+                </TableView>
+
+                <!-- CONTADORES -->
+                <HBox spacing="12">
+                    <VBox alignment="CENTER" spacing="4" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #16213e; -fx-padding: 12;
+                                 -fx-border-radius: 8; -fx-background-radius: 8;
+                                 -fx-border-color: #0f3460;">
+                        <Text fx:id="lblTotal" text="0"
+                              style="-fx-fill: #4fc3f7; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                        <Text text="Total" style="-fx-fill: #a8a8b3; -fx-font-size: 11;"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="4" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #16213e; -fx-padding: 12;
+                                 -fx-border-radius: 8; -fx-background-radius: 8;
+                                 -fx-border-color: #0f3460;">
+                        <Text fx:id="lblPendientes" text="0"
+                              style="-fx-fill: #ffd54f; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                        <Text text="Sin asignar" style="-fx-fill: #a8a8b3; -fx-font-size: 11;"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="4" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #16213e; -fx-padding: 12;
+                                 -fx-border-radius: 8; -fx-background-radius: 8;
+                                 -fx-border-color: #0f3460;">
+                        <Text fx:id="lblEnProceso" text="0"
+                              style="-fx-fill: #e94560; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                        <Text text="En proceso" style="-fx-fill: #a8a8b3; -fx-font-size: 11;"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="4" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #16213e; -fx-padding: 12;
+                                 -fx-border-radius: 8; -fx-background-radius: 8;
+                                 -fx-border-color: #0f3460;">
+                        <Text fx:id="lblFinalizadas" text="0"
+                              style="-fx-fill: #81c784; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                        <Text text="Finalizadas" style="-fx-fill: #a8a8b3; -fx-font-size: 11;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>
