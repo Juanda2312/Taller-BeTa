@@ -3,7 +3,6 @@ package co.edu.uniquindio.tallerbeta.model.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 @Getter
@@ -11,6 +10,11 @@ import java.util.LinkedList;
 public class Administrador extends Usuario{
 
     LinkedList<Mecanico> mecanicosDisponibles;
+
+    public Administrador(){
+        super();
+        mecanicosDisponibles = new LinkedList<>();
+    }
 
     public Administrador(String nombre, String cedula, String correo, String contrasenia) {
         super(nombre, cedula, correo, contrasenia);

@@ -2,14 +2,18 @@ package co.edu.uniquindio.tallerbeta.model.entity;
 
 import co.edu.uniquindio.tallerbeta.model.Enum.Especializacion;
 import co.edu.uniquindio.tallerbeta.model.Enum.Estado;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Mecanico extends Persona {
 
     Especializacion especializacion;
+    @JsonBackReference
     Orden ordenAsignada;
 
     public Mecanico(String nombre, String cedula, Especializacion especializacion) {

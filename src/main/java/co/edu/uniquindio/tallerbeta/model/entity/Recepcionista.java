@@ -10,6 +10,11 @@ public class Recepcionista extends Persona {
 
     LinkedList<Cliente> clientesatendidos;
 
+    public Recepcionista(){
+        super();
+        clientesatendidos = new LinkedList<>();
+    }
+
     public Recepcionista(String nombre, String cedula) {
         super(nombre, cedula);
         clientesatendidos = new LinkedList<>();

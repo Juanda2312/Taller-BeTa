@@ -1,15 +1,26 @@
 package co.edu.uniquindio.tallerbeta.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import java.util.LinkedList;
 
-@Getter
+
+@Getter(onMethod_ = @JsonIgnore)
 @Setter
+
 public class Cliente extends Usuario {
 
     LinkedList<Vehiculo> ListaVehiculos;
+
+    @JsonIgnore
     LinkedList<Orden> ListaOrdenes;
+
+    public Cliente(){
+        super();
+        this.ListaVehiculos = new LinkedList<>();
+        this.ListaOrdenes = new LinkedList<>();
+    }
 
     public Cliente(String nombre, String cedula, String correo, String contrasenia) {
         super(nombre, cedula, correo, contrasenia);

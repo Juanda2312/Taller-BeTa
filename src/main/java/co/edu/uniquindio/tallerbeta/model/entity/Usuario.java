@@ -1,10 +1,12 @@
 package co.edu.uniquindio.tallerbeta.model.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Usuario extends Persona{
     private String correo,contrasenia;
 
