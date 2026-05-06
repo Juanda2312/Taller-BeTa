@@ -7,12 +7,13 @@ import co.edu.uniquindio.tallerbeta.model.entity.Orden;
 import co.edu.uniquindio.tallerbeta.service.Interface.ITallerServicio;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class TallerServicio implements ITallerServicio {
 
-    private final ClienteServicio      clienteServicio;
-    private final OrdenServicio        ordenServicio;
-    private final MecanicoServicio     mecanicoServicio;
+    private final ClienteServicio       clienteServicio;
+    private final OrdenServicio         ordenServicio;
+    private final MecanicoServicio      mecanicoServicio;
     private final RecepcionistaServicio recepcionistaServicio;
     private final AdministradorServicio administradorServicio;
 
@@ -25,7 +26,6 @@ public class TallerServicio implements ITallerServicio {
     }
 
     // Taller
-
     @Override
     public void registrarCliente(String nombre, String cedula,
                                  String correo, String contrasenia) throws Exception {
@@ -37,45 +37,36 @@ public class TallerServicio implements ITallerServicio {
         clienteServicio.iniciarSesion(correo, contrasenia);
     }
 
-    //Cliente
-
+    // Cliente
     @Override
     public Orden realizarOrden(String instrucciones, Cliente cliente) {
         return ordenServicio.crearOrden(instrucciones, cliente);
     }
 
-    //Recepcionista
-
+    // Recepcionista
     @Override
     public void atenderCliente(Cliente cliente) {
         recepcionistaServicio.atenderCliente(cliente);
     }
 
-    //Mecánico
-
+    // Mecanico
     @Override
     public double hacerPresupuesto() {
-        // se delega al mecánico asignado a la orden correspondiente
         return mecanicoServicio.buscarMecanicoDisponible().hacerPresupuesto();
     }
 
     @Override
     public Orden realizarMantenimiento() {
-        Mecanico mecanico = mecanicoServicio.listarMecanicos().stream()
-                .filter(m -> m.getOrdenAsignada() != null)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay mecánicos con orden asignada."));
-        return mecanico.realizarMantenimiento();
+        return mecanicoServicio.realizarMantenimientoConOrden();
     }
 
-    //Mecánico
+    // Administrador
     @Override
     public Mecanico AsignarMecanico() {
         return administradorServicio.asignarMecanico();
     }
 
-    //Ayuda para los controladores
-
+    // Metodos de apoyo para los controladores
     public Cliente buscarClientePorCorreo(String correo) throws Exception {
         return clienteServicio.buscarPorCorreo(correo);
     }
@@ -91,11 +82,12 @@ public class TallerServicio implements ITallerServicio {
     public LinkedList<Orden> listarTodasLasOrdenes() {
         return ordenServicio.listarOrdenes();
     }
-    public void eliminarOrden(java.util.UUID id) {
+
+    public void eliminarOrden(UUID id) {
         ordenServicio.eliminarOrden(id);
     }
 
-    public void guardarOrdenes() {
-        ordenServicio.listarOrdenes(); // ya persiste en el repo
+    public void actualizarInstruccionesOrden(UUID id, String nuevasInstrucciones) {
+        ordenServicio.actualizarInstrucciones(id, nuevasInstrucciones);
     }
 }

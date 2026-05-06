@@ -2,6 +2,7 @@ package co.edu.uniquindio.tallerbeta.service;
 
 import co.edu.uniquindio.tallerbeta.model.Enum.Especializacion;
 import co.edu.uniquindio.tallerbeta.model.entity.Mecanico;
+import co.edu.uniquindio.tallerbeta.model.entity.Orden;
 import co.edu.uniquindio.tallerbeta.repository.MecanicoRepositorio;
 
 import java.util.LinkedList;
@@ -15,19 +16,30 @@ public class MecanicoServicio {
     }
 
     public Mecanico buscarMecanicoDisponible() {
-        return mecanicoRepositorio.listarMecanicos().stream()
-                .filter(m -> m.getOrdenAsignada() == null)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay mecánicos disponibles."));
+        for (Mecanico m : mecanicoRepositorio.listarMecanicos()) {
+            if (m.getOrdenAsignada() == null) return m;
+        }
+        throw new RuntimeException("No hay mecanicos disponibles.");
     }
 
     public Mecanico buscarMecanicoDisponiblePorEspecializacion(Especializacion especializacion) {
-        return mecanicoRepositorio.listarMecanicos().stream()
-                .filter(m -> m.getOrdenAsignada() == null
-                        && m.getEspecializacion() == especializacion)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException(
-                        "No hay mecánicos disponibles con esa especialización."));
+        for (Mecanico m : mecanicoRepositorio.listarMecanicos()) {
+            if (m.getOrdenAsignada() == null && m.getEspecializacion() == especializacion) {
+                return m;
+            }
+        }
+        throw new RuntimeException("No hay mecanicos disponibles con esa especializacion.");
+    }
+
+    public Orden realizarMantenimientoConOrden() {
+        for (Mecanico m : mecanicoRepositorio.listarMecanicos()) {
+            if (m.getOrdenAsignada() != null) {
+                Orden finalizada = m.realizarMantenimiento();
+                mecanicoRepositorio.guardarDatos(mecanicoRepositorio.listarMecanicos());
+                return finalizada;
+            }
+        }
+        throw new RuntimeException("No hay mecanicos con orden asignada.");
     }
 
     public LinkedList<Mecanico> listarMecanicos() {
@@ -44,10 +56,10 @@ public class MecanicoServicio {
 
     public void registrarMecanico(String nombre, String cedula,
                                   Especializacion especializacion) throws Exception {
-        boolean existe = mecanicoRepositorio.listarMecanicos().stream()
-                .anyMatch(m -> m.getCedula().equals(cedula));
-        if (existe)
-            throw new Exception("Ya existe un mecánico con esa cédula.");
+        for (Mecanico m : mecanicoRepositorio.listarMecanicos()) {
+            if (m.getCedula().equals(cedula))
+                throw new Exception("Ya existe un mecanico con esa cedula.");
+        }
         mecanicoRepositorio.registrarMecanico(new Mecanico(nombre, cedula, especializacion));
     }
 }

@@ -12,21 +12,21 @@ import java.util.LinkedList;
 public class AdministradorServicio {
 
     private final AdministradorRepositorio administradorRepositorio;
-    private final MecanicoRepositorio mecanicoRepositorio;
-    private final OrdenRepositorio ordenRepositorio;
+    private final MecanicoRepositorio      mecanicoRepositorio;
+    private final OrdenRepositorio         ordenRepositorio;
 
     public AdministradorServicio() {
         this.administradorRepositorio = new AdministradorRepositorio();
-        this.mecanicoRepositorio = new MecanicoRepositorio();
-        this.ordenRepositorio = new OrdenRepositorio();
+        this.mecanicoRepositorio      = new MecanicoRepositorio();
+        this.ordenRepositorio         = new OrdenRepositorio();
     }
 
     public Mecanico asignarMecanico() {
-        // RN-03: solo mecánicos sin orden asignada
-        return mecanicoRepositorio.listarMecanicos().stream()
-                .filter(m -> m.getOrdenAsignada() == null)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay mecánicos disponibles."));
+        // RN-03: solo mecanicos sin orden asignada
+        for (Mecanico m : mecanicoRepositorio.listarMecanicos()) {
+            if (m.getOrdenAsignada() == null) return m;
+        }
+        throw new RuntimeException("No hay mecanicos disponibles.");
     }
 
     public void asignarMecanicoAOrden(Orden orden) {

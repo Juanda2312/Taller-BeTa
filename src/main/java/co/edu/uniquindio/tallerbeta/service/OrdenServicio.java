@@ -18,21 +18,30 @@ public class OrdenServicio {
     }
 
     public Orden crearOrden(String instrucciones, Cliente cliente) {
-        long activas = ordenRepositorio.listarOrdenes().stream()
-                .filter(o -> o.getEstado() != Estado.FINALIZADO)
-                .count();
+        int activas = 0;
+        for (Orden o : ordenRepositorio.listarOrdenes()) {
+            if (o.getEstado() != Estado.FINALIZADO) activas++;
+        }
         if (activas >= 10)
-            throw new RuntimeException("No se pueden registrar más de 10 órdenes activas en el día.");
+            throw new RuntimeException("No se pueden registrar mas de 10 ordenes activas en el dia. (RN-02)");
 
         Orden orden = cliente.realizarOrden(instrucciones);
         ordenRepositorio.registrarOrden(orden);
         return orden;
     }
 
+    public void actualizarInstrucciones(UUID idOrden, String nuevasInstrucciones) {
+        Orden orden = buscarPorId(idOrden);
+        if (orden.getEstado() != Estado.SINASIGNAR)
+            throw new RuntimeException("Solo puedes editar ordenes sin asignar.");
+        orden.setInstrucciones(nuevasInstrucciones);
+        ordenRepositorio.guardarDatos(ordenRepositorio.listarOrdenes());
+    }
+
     public void asignarMecanico(UUID idOrden, Mecanico mecanico) {
         Orden orden = buscarPorId(idOrden);
         if (mecanico.getOrdenAsignada() != null)
-            throw new RuntimeException("El mecánico ya tiene una orden asignada.");
+            throw new RuntimeException("El mecanico ya tiene una orden asignada.");
         orden.setMecanico(mecanico);
         orden.setEstado(Estado.ENPROCESO);
         mecanico.setOrdenAsignada(orden);
@@ -42,7 +51,7 @@ public class OrdenServicio {
     public void finalizarOrden(UUID idOrden) {
         Orden orden = buscarPorId(idOrden);
         if (orden.getMecanico() == null)
-            throw new RuntimeException("La orden no tiene mecánico asignado.");
+            throw new RuntimeException("La orden no tiene mecanico asignado.");
         orden.getMecanico().realizarMantenimiento();
         ordenRepositorio.guardarDatos(ordenRepositorio.listarOrdenes());
     }

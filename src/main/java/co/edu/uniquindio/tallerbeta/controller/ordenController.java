@@ -4,9 +4,9 @@ import co.edu.uniquindio.tallerbeta.model.Enum.Estado;
 import co.edu.uniquindio.tallerbeta.model.entity.Cliente;
 import co.edu.uniquindio.tallerbeta.model.entity.Orden;
 import co.edu.uniquindio.tallerbeta.service.TallerServicio;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,11 +29,11 @@ public class ordenController {
     @FXML private TextField txtEstado;
     @FXML private TextField txtBuscar;
 
-    @FXML private TableView<Orden>              tablaOrdenes;
-    @FXML private TableColumn<Orden, String>    colId;
-    @FXML private TableColumn<Orden, String>    colInstrucciones;
-    @FXML private TableColumn<Orden, String>    colEstado;
-    @FXML private TableColumn<Orden, String>    colMecanico;
+    @FXML private TableView<Orden>           tablaOrdenes;
+    @FXML private TableColumn<Orden, String> colId;
+    @FXML private TableColumn<Orden, String> colInstrucciones;
+    @FXML private TableColumn<Orden, String> colEstado;
+    @FXML private TableColumn<Orden, String> colMecanico;
 
     @FXML private Text lblTotal;
     @FXML private Text lblPendientes;
@@ -59,21 +59,20 @@ public class ordenController {
 
     private void configurarTabla() {
         colId.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
+                new SimpleStringProperty(
                         data.getValue().getId().toString().substring(0, 8) + "..."));
 
         colInstrucciones.setCellValueFactory(
                 new PropertyValueFactory<>("instrucciones"));
 
         colEstado.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
-                        data.getValue().getEstado().name()));
+                new SimpleStringProperty(data.getValue().getEstado().name()));
 
         colMecanico.setCellValueFactory(data -> {
             Orden o = data.getValue();
             String nombre = o.getMecanico() != null
                     ? o.getMecanico().getNombre() : "Sin asignar";
-            return new javafx.beans.property.SimpleStringProperty(nombre);
+            return new SimpleStringProperty(nombre);
         });
 
         colEstado.setCellFactory(col -> new TableCell<>() {
@@ -98,6 +97,8 @@ public class ordenController {
                 tallerServicio.listarOrdenesPorCliente(clienteActual));
         tablaOrdenes.setItems(listaOrdenes);
         actualizarContadores();
+        String filtro = txtBuscar != null ? txtBuscar.getText() : "";
+        if (!filtro.isBlank()) aplicarFiltro(filtro.trim().toLowerCase());
     }
 
     private void configurarSeleccion() {
@@ -116,12 +117,24 @@ public class ordenController {
             if (nuevo == null || nuevo.isBlank()) {
                 tablaOrdenes.setItems(listaOrdenes);
             } else {
-                FilteredList<Orden> filtrada = new FilteredList<>(listaOrdenes,
-                        o -> o.getEstado().name().toLowerCase()
-                                .contains(nuevo.toLowerCase().trim()));
-                tablaOrdenes.setItems(filtrada);
+                aplicarFiltro(nuevo.trim().toLowerCase());
             }
         });
+    }
+
+    private void aplicarFiltro(String texto) {
+        ObservableList<Orden> filtrada = FXCollections.observableArrayList();
+        for (Orden o : listaOrdenes) {
+            boolean coincideEstado        = o.getEstado().name().toLowerCase().contains(texto);
+            boolean coincideInstrucciones = o.getInstrucciones().toLowerCase().contains(texto);
+            String mecanico = o.getMecanico() != null
+                    ? o.getMecanico().getNombre().toLowerCase() : "";
+            boolean coincideMecanico = mecanico.contains(texto);
+            if (coincideEstado || coincideInstrucciones || coincideMecanico) {
+                filtrada.add(o);
+            }
+        }
+        tablaOrdenes.setItems(filtrada);
     }
 
     @FXML
@@ -129,13 +142,13 @@ public class ordenController {
         String instrucciones = txtInstrucciones.getText().trim();
         if (instrucciones.isEmpty()) {
             controladorPrincipal.crearAlerta(
-                    "Escribe la descripción del problema.", Alert.AlertType.WARNING);
+                    "Escribe la descripcion del problema.", Alert.AlertType.WARNING);
             return;
         }
         try {
             tallerServicio.realizarOrden(instrucciones, clienteActual);
             controladorPrincipal.crearAlerta(
-                    "¡Orden creada exitosamente!", Alert.AlertType.INFORMATION);
+                    "Orden creada exitosamente!", Alert.AlertType.INFORMATION);
             limpiarFormulario();
             cargarOrdenes();
         } catch (Exception e) {
@@ -148,12 +161,12 @@ public class ordenController {
         Orden seleccionada = tablaOrdenes.getSelectionModel().getSelectedItem();
         if (seleccionada == null) {
             controladorPrincipal.crearAlerta(
-                    "Selecciona una orden para editar.", Alert.AlertType.WARNING);
+                    "Selecciona una orden de la tabla para editar.", Alert.AlertType.WARNING);
             return;
         }
         if (seleccionada.getEstado() != Estado.SINASIGNAR) {
             controladorPrincipal.crearAlerta(
-                    "Solo puedes editar órdenes sin asignar.", Alert.AlertType.WARNING);
+                    "Solo puedes editar ordenes sin asignar. (RN)", Alert.AlertType.WARNING);
             return;
         }
         String nuevasInstrucciones = txtInstrucciones.getText().trim();
@@ -162,11 +175,16 @@ public class ordenController {
                     "Escribe las nuevas instrucciones.", Alert.AlertType.WARNING);
             return;
         }
-        seleccionada.setInstrucciones(nuevasInstrucciones);
-        tallerServicio.guardarOrdenes();
-        controladorPrincipal.crearAlerta(
-                "Orden actualizada correctamente.", Alert.AlertType.INFORMATION);
-        cargarOrdenes();
+        try {
+            tallerServicio.actualizarInstruccionesOrden(
+                    seleccionada.getId(), nuevasInstrucciones);
+            controladorPrincipal.crearAlerta(
+                    "Orden actualizada correctamente.", Alert.AlertType.INFORMATION);
+            limpiarFormulario();
+            cargarOrdenes();
+        } catch (Exception e) {
+            controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -179,13 +197,13 @@ public class ordenController {
         }
         if (seleccionada.getEstado() != Estado.SINASIGNAR) {
             controladorPrincipal.crearAlerta(
-                    "Solo puedes eliminar órdenes sin asignar.", Alert.AlertType.WARNING);
+                    "Solo puedes eliminar ordenes sin asignar. (RN)", Alert.AlertType.WARNING);
             return;
         }
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar eliminación");
+        confirmacion.setTitle("Confirmar eliminacion");
         confirmacion.setHeaderText(null);
-        confirmacion.setContentText("¿Estás seguro de eliminar esta orden?");
+        confirmacion.setContentText("Estas seguro de eliminar esta orden?");
         confirmacion.showAndWait().ifPresent(respuesta -> {
             if (respuesta == ButtonType.OK) {
                 try {
@@ -209,25 +227,29 @@ public class ordenController {
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/login.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
-            stage.setTitle("Iniciar Sesión");
+            stage.setTitle("Iniciar Sesion");
             stage.setScene(new Scene(root, 600, 400));
             stage.setResizable(false);
             stage.show();
             controladorPrincipal.cerrarVentana(lblBienvenida);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(
-                    "Error al cerrar sesión: " + e.getMessage(), Alert.AlertType.ERROR);
+                    "Error al cerrar sesion: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     private void actualizarContadores() {
-        lblTotal.setText(String.valueOf(listaOrdenes.size()));
-        lblPendientes.setText(String.valueOf(listaOrdenes.stream()
-                .filter(o -> o.getEstado() == Estado.SINASIGNAR).count()));
-        lblEnProceso.setText(String.valueOf(listaOrdenes.stream()
-                .filter(o -> o.getEstado() == Estado.ENPROCESO).count()));
-        lblFinalizadas.setText(String.valueOf(listaOrdenes.stream()
-                .filter(o -> o.getEstado() == Estado.FINALIZADO).count()));
+        long total = listaOrdenes.size();
+        long sinAsignar = 0, enProceso = 0, finalizadas = 0;
+        for (Orden o : listaOrdenes) {
+            if      (o.getEstado() == Estado.SINASIGNAR) sinAsignar++;
+            else if (o.getEstado() == Estado.ENPROCESO)  enProceso++;
+            else if (o.getEstado() == Estado.FINALIZADO) finalizadas++;
+        }
+        lblTotal.setText(String.valueOf(total));
+        lblPendientes.setText(String.valueOf(sinAsignar));
+        lblEnProceso.setText(String.valueOf(enProceso));
+        lblFinalizadas.setText(String.valueOf(finalizadas));
     }
 
     private void limpiarFormulario() {

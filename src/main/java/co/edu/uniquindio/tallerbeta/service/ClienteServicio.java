@@ -15,12 +15,10 @@ public class ClienteServicio {
 
     public void registrarCliente(String nombre, String cedula,
                                  String correo, String contrasenia) throws Exception {
-        boolean existe = clienteRepositorio.listarClientes().stream()
-                .anyMatch(c -> c.getCorreo().equalsIgnoreCase(correo)
-                        || c.getCedula().equals(cedula));
-        if (existe)
-            throw new Exception("Ya existe un cliente con ese correo o cédula.");
-
+        for (Cliente c : clienteRepositorio.listarClientes()) {
+            if (c.getCorreo().equalsIgnoreCase(correo) || c.getCedula().equals(cedula))
+                throw new Exception("Ya existe un cliente con ese correo o cedula.");
+        }
         clienteRepositorio.registrarCliente(new Cliente(nombre, cedula, correo, contrasenia));
     }
 
@@ -30,10 +28,10 @@ public class ClienteServicio {
     }
 
     public Cliente buscarPorCorreo(String correo) throws Exception {
-        return clienteRepositorio.listarClientes().stream()
-                .filter(c -> c.getCorreo().equalsIgnoreCase(correo))
-                .findFirst()
-                .orElseThrow(() -> new Exception("No existe un usuario con ese correo."));
+        for (Cliente c : clienteRepositorio.listarClientes()) {
+            if (c.getCorreo().equalsIgnoreCase(correo)) return c;
+        }
+        throw new Exception("No existe un usuario con ese correo.");
     }
 
     public LinkedList<Cliente> listarClientes() {
@@ -41,7 +39,9 @@ public class ClienteServicio {
     }
 
     public boolean existeCliente(String cedula) {
-        return clienteRepositorio.listarClientes().stream()
-                .anyMatch(c -> c.getCedula().equals(cedula));
+        for (Cliente c : clienteRepositorio.listarClientes()) {
+            if (c.getCedula().equals(cedula)) return true;
+        }
+        return false;
     }
 }
