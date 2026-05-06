@@ -10,11 +10,11 @@ import java.io.File;
 public class DatosDePrueba {
 
     public static void cargar() {
-        // Solo carga si no existen los archivos
-        if (new File(Constantes.RUTA_CLIENTE).exists()) return;
+        if (new File(Constantes.RUTA_CLIENTE).exists()
+                && new File(Constantes.RUTA_MECANICO).exists()
+                && new File(Constantes.RUTA_ORDEN).exists()) return;
 
         new File("data").mkdirs();
-
         cargarClientes();
         cargarMecanicos();
         cargarOrdenes();
@@ -95,8 +95,6 @@ public class DatosDePrueba {
         ordenRepo.registrarOrden(o7);
         ordenRepo.registrarOrden(o8);
         ordenRepo.registrarOrden(o9);
-        ordenRepo.registrarOrden(o10);
-        ordenRepo.registrarOrden(o11);
 
         // Actualizar mecánicos con orden asignada
         mecanicoRepo.guardarDatos(mecanicoRepo.listarMecanicos());
