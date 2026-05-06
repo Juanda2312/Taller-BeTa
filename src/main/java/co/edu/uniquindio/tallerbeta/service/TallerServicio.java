@@ -91,4 +91,11 @@ public class TallerServicio implements ITallerServicio {
     public LinkedList<Orden> listarTodasLasOrdenes() {
         return ordenServicio.listarOrdenes();
     }
+    public void eliminarOrden(java.util.UUID id) {
+        ordenServicio.eliminarOrden(id);
+    }
+
+    public void guardarOrdenes() {
+        ordenServicio.listarOrdenes(); // ya persiste en el repo
+    }
 }
