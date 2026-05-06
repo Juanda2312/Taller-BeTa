@@ -54,7 +54,7 @@ public class registrocontroller {
 
         try {
             tallerServicio.registrarCliente(nombre, cedula, correo, pass);
-            controladorPrincipal.crearAlerta("¡Registro exitoso! Ya puede iniciar sesión.", Alert.AlertType.INFORMATION);
+            controladorPrincipal.crearAlerta("Registro exitoso! Ya puede iniciar sesion.", Alert.AlertType.INFORMATION);
             volver(event);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
@@ -67,11 +67,14 @@ public class registrocontroller {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/login.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Iniciar Sesión");
-            stage.setScene(new Scene(root, 600, 400));
-            stage.show();
-            controladorPrincipal.cerrarVentana(btnvolver);
+            // Obtiene el stage desde cualquier control disponible
+            Stage stage = (Stage) btnvolver.getScene().getWindow();
+            stage.setTitle("Taller BeTa — Iniciar Sesion");
+            stage.setScene(new Scene(root, 600, 520));
+            stage.setMinWidth(600);
+            stage.setMinHeight(520);
+            stage.setWidth(600);
+            stage.setHeight(520);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }

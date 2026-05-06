@@ -40,7 +40,7 @@ public class logincontroller {
         try {
             tallerServicio.iniciarSesion(correo, pass);
             controladorPrincipal.setUsuario(tallerServicio.buscarClientePorCorreo(correo));
-            abrirVentana("orden.fxml", "Solicitar Orden", btniniciarsesion);
+            cambiarEscena("orden.fxml", "Taller BeTa — Órdenes", btniniciarsesion, 900, 600);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -48,19 +48,22 @@ public class logincontroller {
 
     @FXML
     void Registrarse(ActionEvent event) {
-        abrirVentana("registro.fxml", "Registro", btnregistrarse);
+        cambiarEscena("registro.fxml", "Taller BeTa — Registro", btnregistrarse, 600, 540);
     }
 
-    private void abrirVentana(String fxml, String titulo, Button origen) {
+    // Reutiliza el mismo Stage en vez de crear uno nuevo — así no se pierde el botón de maximizar
+    private void cambiarEscena(String fxml, String titulo, Button origen, double ancho, double alto) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/" + fxml));
             Parent root = loader.load();
-            Stage stage = new Stage();
+            Stage stage = (Stage) origen.getScene().getWindow();
             stage.setTitle(titulo);
-            stage.setScene(new Scene(root));
-            stage.show();
-            controladorPrincipal.cerrarVentana(origen);
+            stage.setScene(new Scene(root, ancho, alto));
+            stage.setMinWidth(ancho);
+            stage.setMinHeight(alto);
+            stage.setWidth(ancho);
+            stage.setHeight(alto);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta("Error al abrir ventana: " + e.getMessage(),
                     Alert.AlertType.ERROR);

@@ -3,31 +3,66 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<VBox alignment="CENTER" spacing="0"
+      prefHeight="520.0" prefWidth="600.0"
+      style="-fx-background-color: #1a1a2e;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.tallerbeta.controller.logincontroller">
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.tallerbeta.controller.logincontroller">
-   <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Sesión" />
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" />
-            <TextField fx:id="txtcorreo" />
-         </children>
+   <VBox alignment="CENTER" spacing="22" maxWidth="380"
+         style="-fx-background-color: #16213e;
+                 -fx-background-radius: 16;
+                 -fx-padding: 40 44 40 44;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 24, 0, 0, 6);">
+
+      <VBox alignment="CENTER" spacing="6">
+         <Text text="🔧" style="-fx-font-size: 36;"/>
+         <Text text="Taller BeTa"
+               style="-fx-fill: #e94560; -fx-font-size: 24; -fx-font-weight: bold;"/>
+         <Text text="Sistema de Órdenes de Mantenimiento"
+               style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+      </VBox>
+
+      <Separator style="-fx-background-color: #0f3460;"/>
+
+      <VBox spacing="6">
+         <Text text="Correo electrónico" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+         <TextField fx:id="txtcorreo" promptText="correo@ejemplo.com"
+                    style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                              -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 10 14 10 14; -fx-font-size: 13;"/>
+      </VBox>
+
+      <VBox spacing="6">
+         <Text text="Contraseña" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+         <PasswordField fx:id="txtcontraseña" promptText="••••••••"
+                        style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                                  -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                                  -fx-border-radius: 8; -fx-background-radius: 8;
+                                  -fx-padding: 10 14 10 14; -fx-font-size: 13;"/>
+      </VBox>
+
+      <Button fx:id="btniniciarsesion" text="Iniciar sesión"
+              onAction="#iniciarSesion" maxWidth="Infinity"
+              style="-fx-background-color: #e94560; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-font-size: 14;
+                       -fx-background-radius: 8; -fx-cursor: hand;
+                       -fx-padding: 12 0 12 0;"/>
+
+      <HBox alignment="CENTER" spacing="6">
+         <Text text="¿No tienes cuenta?" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+         <Button fx:id="btnregistrarse" text="Regístrate aquí" onAction="#Registrarse"
+                 style="-fx-background-color: transparent; -fx-text-fill: #4fc3f7;
+                           -fx-font-size: 12; -fx-cursor: hand;
+                           -fx-underline: true; -fx-padding: 0;"/>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
-            <PasswordField fx:id="txtcontraseña" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="btniniciarsesion" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar sesion" />
-            <Button fx:id="btnregistrarse" mnemonicParsing="false" onAction="#Registrarse" text="Registrarse" />
-         </children>
-      </HBox>
-   </children>
+
+   </VBox>
 </VBox>

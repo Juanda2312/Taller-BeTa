@@ -3,51 +3,90 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.tallerbeta.controller.registrocontroller">
-    <children>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Registrarse " />
-                <Button fx:id="btnvolver" mnemonicParsing="false" onAction="#volver" text="Volver" />
-            </children>
+<VBox alignment="CENTER" spacing="0"
+      prefHeight="520.0" prefWidth="600.0"
+      style="-fx-background-color: #1a1a2e;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="co.edu.uniquindio.tallerbeta.controller.registrocontroller">
+
+    <VBox alignment="CENTER" spacing="18" maxWidth="400"
+          style="-fx-background-color: #16213e;
+                 -fx-background-radius: 16;
+                 -fx-padding: 36 44 36 44;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 24, 0, 0, 6);">
+
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Button fx:id="btnvolver" text="← Volver" onAction="#volver"
+                    style="-fx-background-color: transparent; -fx-text-fill: #4fc3f7;
+                           -fx-font-size: 12; -fx-cursor: hand; -fx-padding: 0;"/>
+            <VBox HBox.hgrow="ALWAYS" alignment="CENTER" spacing="2">
+                <Text text="Crear cuenta"
+                      style="-fx-fill: #ffffff; -fx-font-size: 20; -fx-font-weight: bold;"/>
+                <Text text="Ingresa tus datos para registrarte"
+                      style="-fx-fill: #a8a8b3; -fx-font-size: 11;"/>
+            </VBox>
         </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" />
-                <TextField fx:id="txtnombre" />
-            </children></HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cedula" />
-                <TextField fx:id="txtcedula" />
-            </children>
+
+        <Separator style="-fx-background-color: #0f3460;"/>
+
+        <VBox spacing="6">
+            <Text text="Nombre completo" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+            <TextField fx:id="txtnombre" promptText="Ej: Juan Tapiero"
+                       style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                              -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 9 14 9 14; -fx-font-size: 13;"/>
+        </VBox>
+
+        <VBox spacing="6">
+            <Text text="Cédula" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+            <TextField fx:id="txtcedula" promptText="Número de cédula"
+                       style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                              -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 9 14 9 14; -fx-font-size: 13;"/>
+        </VBox>
+
+        <VBox spacing="6">
+            <Text text="Correo electrónico" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+            <TextField fx:id="txtcorreo" promptText="correo@ejemplo.com"
+                       style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                              -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 9 14 9 14; -fx-font-size: 13;"/>
+        </VBox>
+
+        <HBox spacing="12">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Text text="Contraseña" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+                <PasswordField fx:id="txtcontraseña" promptText="Mín. 6 caracteres"
+                               style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                                      -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                                      -fx-border-radius: 8; -fx-background-radius: 8;
+                                      -fx-padding: 9 14 9 14; -fx-font-size: 13;"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Text text="Confirmar contraseña" style="-fx-fill: #a8a8b3; -fx-font-size: 12;"/>
+                <PasswordField fx:id="txtconfirmarcontraseña" promptText="Repite la contraseña"
+                               style="-fx-background-color: #0f3460; -fx-text-fill: #ffffff;
+                                      -fx-prompt-text-fill: #5a5a7a; -fx-border-color: #1a4a7a;
+                                      -fx-border-radius: 8; -fx-background-radius: 8;
+                                      -fx-padding: 9 14 9 14; -fx-font-size: 13;"/>
+            </VBox>
         </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Correo" />
-                <TextField fx:id="txtcorreo" />
-            </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
-                <PasswordField fx:id="txtcontraseña" />
-            </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Confirmar contraseña" />
-                <PasswordField fx:id="txtconfirmarcontraseña" />
-            </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Button fx:id="btnregistrarse" mnemonicParsing="false" onAction="#registrarse" text="Registrarse" />
-            </children>
-        </HBox>
-    </children>
+
+        <Button fx:id="btnregistrarse" text="Crear cuenta" onAction="#registrarse"
+                maxWidth="Infinity"
+                style="-fx-background-color: #e94560; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-font-size: 14;
+                       -fx-background-radius: 8; -fx-cursor: hand;
+                       -fx-padding: 12 0 12 0;"/>
+
+    </VBox>
 </VBox>
