@@ -18,8 +18,8 @@
            style="-fx-background-color: #080c14;">
 
     <HBox>
-        <!-- Panel izquierdo decorativo -->
-        <VBox prefWidth="380" prefHeight="600" alignment="CENTER" spacing="0"
+        <!-- Panel izquierdo decorativo — crece con la ventana -->
+        <VBox HBox.hgrow="ALWAYS" prefHeight="600" alignment="CENTER" spacing="0"
               style="-fx-background-color: #080c14; -fx-padding: 0 0 0 50;">
 
             <Rectangle width="3" height="60"
@@ -40,7 +40,6 @@
             <Rectangle width="3" height="60"
                        style="-fx-fill: linear-gradient(to bottom, #e94560, transparent);"/>
 
-            <!-- Info decorativa -->
             <VBox spacing="14" style="-fx-padding: 32 0 0 0;">
                 <VBox spacing="4"
                       style="-fx-background-color: #0d1117;
@@ -50,7 +49,8 @@
                           style="-fx-fill: #e94560; -fx-font-size: 9;
                                  -fx-font-family: 'Consolas'; -fx-font-weight: bold;"/>
                     <Text text="Contraseña mínimo 6 caracteres"
-                          style="-fx-fill: #4a5568; -fx-font-size: 11; -fx-font-family: 'Consolas';"/>
+                          style="-fx-fill: #4a5568; -fx-font-size: 11;
+                                 -fx-font-family: 'Consolas';"/>
                 </VBox>
                 <VBox spacing="4"
                       style="-fx-background-color: #0d1117;
@@ -60,18 +60,18 @@
                           style="-fx-fill: #e94560; -fx-font-size: 9;
                                  -fx-font-family: 'Consolas'; -fx-font-weight: bold;"/>
                     <Text text="Correo y cédula no pueden repetirse"
-                          style="-fx-fill: #4a5568; -fx-font-size: 11; -fx-font-family: 'Consolas';"/>
+                          style="-fx-fill: #4a5568; -fx-font-size: 11;
+                                 -fx-font-family: 'Consolas';"/>
                 </VBox>
             </VBox>
         </VBox>
 
-        <!-- Panel derecho: formulario -->
-        <VBox prefWidth="520" prefHeight="600" alignment="CENTER"
+        <!-- Panel derecho: formulario — crece con la ventana -->
+        <VBox HBox.hgrow="ALWAYS" prefHeight="600" alignment="CENTER"
               style="-fx-background-color: #0d1117; -fx-padding: 0 50 0 50;">
 
-            <VBox spacing="24" maxWidth="400">
+            <VBox spacing="22" maxWidth="400">
 
-                <!-- Header -->
                 <HBox alignment="CENTER_LEFT" spacing="14">
                     <Button fx:id="btnvolver" text="← Volver" onAction="#volver"
                             style="-fx-background-color: #161b22;
@@ -85,13 +85,13 @@
                               style="-fx-fill: #ffffff; -fx-font-size: 20;
                                      -fx-font-weight: bold; -fx-font-family: 'Consolas';"/>
                         <Text text="Completa todos los campos"
-                              style="-fx-fill: #4a5568; -fx-font-size: 11; -fx-font-family: 'Consolas';"/>
+                              style="-fx-fill: #4a5568; -fx-font-size: 11;
+                                     -fx-font-family: 'Consolas';"/>
                     </VBox>
                 </HBox>
 
                 <Separator style="-fx-background-color: #21262d;"/>
 
-                <!-- Campos fila 1 -->
                 <HBox spacing="14">
                     <VBox spacing="7" HBox.hgrow="ALWAYS">
                         <HBox spacing="6" alignment="CENTER_LEFT">
@@ -131,7 +131,6 @@
                     </VBox>
                 </HBox>
 
-                <!-- Correo -->
                 <VBox spacing="7">
                     <HBox spacing="6" alignment="CENTER_LEFT">
                         <Text text="▸" style="-fx-fill: #e94560; -fx-font-size: 10;"/>
@@ -151,7 +150,6 @@
                                       -fx-control-inner-background: #161b22;"/>
                 </VBox>
 
-                <!-- Contraseñas -->
                 <HBox spacing="14">
                     <VBox spacing="7" HBox.hgrow="ALWAYS">
                         <HBox spacing="6" alignment="CENTER_LEFT">
@@ -178,7 +176,8 @@
                                   style="-fx-fill: #718096; -fx-font-size: 10;
                                          -fx-font-family: 'Consolas'; -fx-font-weight: bold;"/>
                         </HBox>
-                        <PasswordField fx:id="txtconfirmarcontraseña" promptText="Repetir contraseña"
+                        <PasswordField fx:id="txtconfirmarcontraseña"
+                                       promptText="Repetir contraseña"
                                        style="-fx-background-color: #161b22;
                                               -fx-text-fill: #e2e8f0;
                                               -fx-prompt-text-fill: #2d3748;
@@ -191,7 +190,6 @@
                     </VBox>
                 </HBox>
 
-                <!-- Botón -->
                 <Button fx:id="btnregistrarse" text="CREAR CUENTA →"
                         onAction="#registrarse" maxWidth="Infinity"
                         style="-fx-background-color: #e94560;
@@ -200,14 +198,12 @@
                                -fx-background-radius: 4; -fx-cursor: hand;
                                -fx-padding: 14 0 14 0;
                                -fx-effect: dropshadow(gaussian,rgba(233,69,96,0.5),16,0,0,4);"/>
-
             </VBox>
         </VBox>
     </HBox>
 
-    <!-- Línea divisoria -->
+    <!-- Línea divisoria central -->
     <Rectangle width="1" height="600"
                style="-fx-fill: linear-gradient(to bottom,
                       transparent 0%, #21262d 25%, #e94560 50%, #21262d 75%, transparent 100%);"/>
-
 </StackPane>

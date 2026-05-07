@@ -51,10 +51,9 @@ public class registrocontroller {
             controladorPrincipal.crearAlerta("La contraseña debe tener mínimo 6 caracteres.", Alert.AlertType.WARNING);
             return;
         }
-
         try {
             tallerServicio.registrarCliente(nombre, cedula, correo, pass);
-            controladorPrincipal.crearAlerta("Registro exitoso! Ya puede iniciar sesion.", Alert.AlertType.INFORMATION);
+            controladorPrincipal.crearAlerta("Registro exitoso! Ya puede iniciar sesión.", Alert.AlertType.INFORMATION);
             volver(event);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
@@ -67,14 +66,19 @@ public class registrocontroller {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/login.fxml"));
             Parent root = loader.load();
-            // Obtiene el stage desde cualquier control disponible
             Stage stage = (Stage) btnvolver.getScene().getWindow();
-            stage.setTitle("Taller BeTa — Iniciar Sesion");
-            stage.setScene(new Scene(root, 600, 520));
-            stage.setMinWidth(600);
-            stage.setMinHeight(520);
-            stage.setWidth(600);
-            stage.setHeight(520);
+            boolean estabaMaximizado = stage.isMaximized();
+            stage.setTitle("Taller BeTa — Iniciar Sesión");
+            stage.setScene(new Scene(root, 900, 600));
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            if (estabaMaximizado) {
+                stage.setMaximized(true);
+            } else {
+                stage.setWidth(900);
+                stage.setHeight(600);
+                stage.centerOnScreen();
+            }
         } catch (Exception e) {
             controladorPrincipal.crearAlerta("Error: " + e.getMessage(), Alert.AlertType.ERROR);
         }

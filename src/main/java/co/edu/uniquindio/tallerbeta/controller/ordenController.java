@@ -28,6 +28,7 @@ public class ordenController {
     @FXML private TextField txtId;
     @FXML private TextField txtEstado;
     @FXML private TextField txtBuscar;
+    @FXML private Button    btnCerrarSesion;
 
     @FXML private TableView<Orden>           tablaOrdenes;
     @FXML private TableColumn<Orden, String> colId;
@@ -58,7 +59,6 @@ public class ordenController {
     }
 
     private void configurarTabla() {
-        // Columna ID
         colId.setCellValueFactory(data ->
                 new SimpleStringProperty(
                         data.getValue().getId().toString().substring(0, 8) + "..."));
@@ -67,22 +67,20 @@ public class ordenController {
                 super.updateItem(item, empty);
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
-                setStyle("-fx-text-fill: #4a5568; -fx-font-family: Consolas; -fx-font-size: 11;");
+                setStyle("-fx-text-fill: #6e7681; -fx-font-family: Consolas; -fx-font-size: 11;");
             }
         });
 
-        // Columna Instrucciones — FIX texto visible
         colInstrucciones.setCellValueFactory(new PropertyValueFactory<>("instrucciones"));
         colInstrucciones.setCellFactory(col -> new TableCell<>() {
             @Override protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
-                setStyle("-fx-text-fill: #c9d1d9; -fx-font-size: 12; -fx-font-family: Consolas;");
+                setStyle("-fx-text-fill: #e6edf3; -fx-font-size: 12; -fx-font-family: Consolas;");
             }
         });
 
-        // Columna Estado — badges de colores
         colEstado.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getEstado().name()));
         colEstado.setCellFactory(col -> new TableCell<>() {
@@ -108,7 +106,6 @@ public class ordenController {
             }
         });
 
-        // Columna Mecánico
         colMecanico.setCellValueFactory(data -> {
             Orden o = data.getValue();
             String nombre = o.getMecanico() != null ? o.getMecanico().getNombre() : "—";
@@ -120,13 +117,12 @@ public class ordenController {
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
                 setStyle("—".equals(item)
-                        ? "-fx-text-fill: #2d3748; -fx-font-family: Consolas; -fx-font-size: 12;"
-                        : "-fx-text-fill: #c9d1d9; -fx-font-family: Consolas; -fx-font-size: 12;");
+                        ? "-fx-text-fill: #30363d; -fx-font-family: Consolas; -fx-font-size: 12;"
+                        : "-fx-text-fill: #e6edf3; -fx-font-family: Consolas; -fx-font-size: 12; -fx-font-weight: bold;");
             }
         });
     }
 
-    // FIX: refresca siempre la lista maestra y luego aplica filtro si hay
     @FXML
     public void cargarOrdenes() {
         listaOrdenes = FXCollections.observableArrayList(
@@ -164,16 +160,19 @@ public class ordenController {
         for (Orden o : listaOrdenes) {
             boolean est  = o.getEstado().name().toLowerCase().contains(texto);
             boolean inst = o.getInstrucciones().toLowerCase().contains(texto);
-            String mec   = o.getMecanico() != null ? o.getMecanico().getNombre().toLowerCase() : "";
+            String mec   = o.getMecanico() != null
+                    ? o.getMecanico().getNombre().toLowerCase() : "";
             if (est || inst || mec.contains(texto)) filtrada.add(o);
         }
         tablaOrdenes.setItems(filtrada);
     }
 
-    @FXML void crearOrden(ActionEvent event) {
+    @FXML
+    void crearOrden(ActionEvent event) {
         String inst = txtInstrucciones.getText().trim();
         if (inst.isEmpty()) {
-            controladorPrincipal.crearAlerta("Escribe la descripción del problema.", Alert.AlertType.WARNING);
+            controladorPrincipal.crearAlerta(
+                    "Escribe la descripción del problema.", Alert.AlertType.WARNING);
             return;
         }
         try {
@@ -186,34 +185,42 @@ public class ordenController {
         }
     }
 
-    @FXML void actualizarOrden(ActionEvent event) {
+    @FXML
+    void actualizarOrden(ActionEvent event) {
         Orden sel = tablaOrdenes.getSelectionModel().getSelectedItem();
         if (sel == null) {
-            controladorPrincipal.crearAlerta("Selecciona una orden para editar.", Alert.AlertType.WARNING); return;
+            controladorPrincipal.crearAlerta("Selecciona una orden para editar.", Alert.AlertType.WARNING);
+            return;
         }
         if (sel.getEstado() != Estado.SINASIGNAR) {
-            controladorPrincipal.crearAlerta("Solo puedes editar órdenes SINASIGNAR.", Alert.AlertType.WARNING); return;
+            controladorPrincipal.crearAlerta("Solo puedes editar órdenes SINASIGNAR.", Alert.AlertType.WARNING);
+            return;
         }
         String nuevas = txtInstrucciones.getText().trim();
         if (nuevas.isEmpty()) {
-            controladorPrincipal.crearAlerta("Escribe las nuevas instrucciones.", Alert.AlertType.WARNING); return;
+            controladorPrincipal.crearAlerta("Escribe las nuevas instrucciones.", Alert.AlertType.WARNING);
+            return;
         }
         try {
             tallerServicio.actualizarInstruccionesOrden(sel.getId(), nuevas);
             controladorPrincipal.crearAlerta("Orden actualizada.", Alert.AlertType.INFORMATION);
-            limpiarFormulario(); cargarOrdenes();
+            limpiarFormulario();
+            cargarOrdenes();
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    @FXML void eliminarOrden(ActionEvent event) {
+    @FXML
+    void eliminarOrden(ActionEvent event) {
         Orden sel = tablaOrdenes.getSelectionModel().getSelectedItem();
         if (sel == null) {
-            controladorPrincipal.crearAlerta("Selecciona una orden para eliminar.", Alert.AlertType.WARNING); return;
+            controladorPrincipal.crearAlerta("Selecciona una orden para eliminar.", Alert.AlertType.WARNING);
+            return;
         }
         if (sel.getEstado() != Estado.SINASIGNAR) {
-            controladorPrincipal.crearAlerta("Solo puedes eliminar órdenes SINASIGNAR.", Alert.AlertType.WARNING); return;
+            controladorPrincipal.crearAlerta("Solo puedes eliminar órdenes SINASIGNAR.", Alert.AlertType.WARNING);
+            return;
         }
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirmar eliminación");
@@ -224,7 +231,8 @@ public class ordenController {
                 try {
                     tallerServicio.eliminarOrden(sel.getId());
                     controladorPrincipal.crearAlerta("Orden eliminada.", Alert.AlertType.INFORMATION);
-                    limpiarFormulario(); cargarOrdenes();
+                    limpiarFormulario();
+                    cargarOrdenes();
                 } catch (Exception e) {
                     controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
                 }
@@ -232,20 +240,34 @@ public class ordenController {
         });
     }
 
-    @FXML void cerrarSesion(ActionEvent event) {
+    @FXML
+    void cerrarSesion(ActionEvent event) {
         try {
             controladorPrincipal.setUsuario(null);
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/login.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
+
+            // FIX: reusar Stage actual — conserva botón maximizar
+            Stage stage = (Stage) btnCerrarSesion.getScene().getWindow();
+            boolean estabaMaximizado = stage.isMaximized();
+
             stage.setTitle("Taller BeTa — Iniciar Sesión");
             stage.setScene(new Scene(root, 900, 600));
-            stage.setResizable(false);
-            stage.show();
-            controladorPrincipal.cerrarVentana(lblBienvenida);
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            stage.setResizable(true);
+
+            if (estabaMaximizado) {
+                stage.setMaximized(true);
+            } else {
+                stage.setWidth(900);
+                stage.setHeight(600);
+                stage.centerOnScreen();
+            }
         } catch (Exception e) {
-            controladorPrincipal.crearAlerta("Error al cerrar sesión: " + e.getMessage(), Alert.AlertType.ERROR);
+            controladorPrincipal.crearAlerta(
+                    "Error al cerrar sesión: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

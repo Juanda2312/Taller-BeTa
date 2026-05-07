@@ -36,11 +36,10 @@ public class logincontroller {
             controladorPrincipal.crearAlerta("Complete todos los campos.", Alert.AlertType.WARNING);
             return;
         }
-
         try {
             tallerServicio.iniciarSesion(correo, pass);
             controladorPrincipal.setUsuario(tallerServicio.buscarClientePorCorreo(correo));
-            cambiarEscena("orden.fxml", "Taller BeTa — Órdenes", btniniciarsesion, 900, 600);
+            cambiarEscena("orden.fxml", "Taller BeTa — Órdenes", btniniciarsesion, 1100, 700);
         } catch (Exception e) {
             controladorPrincipal.crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -48,22 +47,28 @@ public class logincontroller {
 
     @FXML
     void Registrarse(ActionEvent event) {
-        cambiarEscena("registro.fxml", "Taller BeTa — Registro", btnregistrarse, 600, 540);
+        cambiarEscena("registro.fxml", "Taller BeTa — Registro", btnregistrarse, 900, 600);
     }
 
-    // Reutiliza el mismo Stage en vez de crear uno nuevo — así no se pierde el botón de maximizar
-    private void cambiarEscena(String fxml, String titulo, Button origen, double ancho, double alto) {
+    private void cambiarEscena(String fxml, String titulo, Button origen,
+                               double ancho, double alto) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/co/edu/uniquindio/tallerbeta/" + fxml));
             Parent root = loader.load();
             Stage stage = (Stage) origen.getScene().getWindow();
+            boolean estabaMaximizado = stage.isMaximized();
             stage.setTitle(titulo);
             stage.setScene(new Scene(root, ancho, alto));
             stage.setMinWidth(ancho);
             stage.setMinHeight(alto);
-            stage.setWidth(ancho);
-            stage.setHeight(alto);
+            if (estabaMaximizado) {
+                stage.setMaximized(true);
+            } else {
+                stage.setWidth(ancho);
+                stage.setHeight(alto);
+                stage.centerOnScreen();
+            }
         } catch (Exception e) {
             controladorPrincipal.crearAlerta("Error al abrir ventana: " + e.getMessage(),
                     Alert.AlertType.ERROR);
