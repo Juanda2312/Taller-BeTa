@@ -7,8 +7,16 @@ import co.edu.uniquindio.tallerbeta.repository.*;
 
 import java.io.File;
 
+/**
+ * Clase utilitaria para cargar datos de prueba en el sistema.
+ * Crea datos de ejemplo para clientes, mecánicos y órdenes si los archivos de datos no existen.
+ */
 public class DatosDePrueba {
 
+    /**
+     * Método principal que carga los datos de prueba si los archivos no existen.
+     * Crea el directorio 'data' y llama a los métodos para cargar clientes, mecánicos y órdenes.
+     */
     public static void cargar() {
         if (new File(Constantes.RUTA_CLIENTE).exists()
                 && new File(Constantes.RUTA_MECANICO).exists()
@@ -20,6 +28,10 @@ public class DatosDePrueba {
         cargarOrdenes();
     }
 
+    /**
+     * Carga datos de prueba para clientes.
+     * Registra varios clientes de ejemplo en el repositorio.
+     */
     private static void cargarClientes() {
         ClienteRepositorio repo = new ClienteRepositorio();
 
@@ -35,6 +47,10 @@ public class DatosDePrueba {
         repo.registrarCliente(new Cliente("Diego Ramirez",   "1001555666", "diego@gmail.com",   "diego123"));
     }
 
+    /**
+     * Carga datos de prueba para mecánicos.
+     * Registra varios mecánicos de ejemplo con diferentes especializaciones en el repositorio.
+     */
     private static void cargarMecanicos() {
         MecanicoRepositorio repo = new MecanicoRepositorio();
 
@@ -45,6 +61,10 @@ public class DatosDePrueba {
         repo.registrarMecanico(new Mecanico("Julian Ospina",  "2005555555", Especializacion.ELECTRICO));
     }
 
+    /**
+     * Carga datos de prueba para órdenes.
+     * Crea órdenes de ejemplo asociadas a clientes y mecánicos, con diferentes estados.
+     */
     private static void cargarOrdenes() {
         ClienteRepositorio  clienteRepo  = new ClienteRepositorio();
         MecanicoRepositorio mecanicoRepo = new MecanicoRepositorio();

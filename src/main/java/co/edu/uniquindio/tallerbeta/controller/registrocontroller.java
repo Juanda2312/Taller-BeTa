@@ -12,6 +12,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para la vista de registro de clientes.
+ * Maneja el registro de nuevos clientes y la navegación de vuelta al login.
+ */
 public class registrocontroller {
 
     private final ControladorPrincipal controladorPrincipal;
@@ -25,11 +29,20 @@ public class registrocontroller {
     @FXML private TextField     txtcorreo;
     @FXML private TextField     txtnombre;
 
+    /**
+     * Constructor que inicializa el controlador con el controlador principal y el servicio del taller.
+     */
     public registrocontroller() {
         controladorPrincipal = ControladorPrincipal.getInstance();
         tallerServicio       = controladorPrincipal.getTallerServicio();
     }
 
+    /**
+     * Maneja el evento de registrarse.
+     * Valida los campos, registra al cliente y vuelve al login si es exitoso.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void registrarse(ActionEvent event) {
         String nombre    = txtnombre.getText().trim();
@@ -60,6 +73,12 @@ public class registrocontroller {
         }
     }
 
+    /**
+     * Maneja el evento de volver.
+     * Regresa a la vista de login.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void volver(ActionEvent event) {
         try {

@@ -17,6 +17,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para la vista de órdenes de mantenimiento.
+ * Permite a los clientes gestionar sus órdenes: crear, actualizar, eliminar y visualizar.
+ */
 public class ordenController {
 
     private final ControladorPrincipal controladorPrincipal;
@@ -43,11 +47,18 @@ public class ordenController {
 
     private ObservableList<Orden> listaOrdenes;
 
+    /**
+     * Constructor que inicializa el controlador con el controlador principal y el servicio del taller.
+     */
     public ordenController() {
         controladorPrincipal = ControladorPrincipal.getInstance();
         tallerServicio       = controladorPrincipal.getTallerServicio();
     }
 
+    /**
+     * Método de inicialización que configura la vista con el cliente actual,
+     * configura la tabla, carga las órdenes y establece los listeners.
+     */
     @FXML
     public void initialize() {
         clienteActual = (Cliente) controladorPrincipal.getUsuario();
@@ -58,6 +69,9 @@ public class ordenController {
         configurarBusqueda();
     }
 
+    /**
+     * Configura las columnas de la tabla de órdenes con estilos y formateo personalizado.
+     */
     private void configurarTabla() {
         colId.setCellValueFactory(data ->
                 new SimpleStringProperty(
@@ -123,6 +137,9 @@ public class ordenController {
         });
     }
 
+    /**
+     * Carga las órdenes del cliente actual en la tabla y actualiza los contadores.
+     */
     @FXML
     public void cargarOrdenes() {
         listaOrdenes = FXCollections.observableArrayList(
@@ -136,6 +153,10 @@ public class ordenController {
         tablaOrdenes.refresh();
     }
 
+    /**
+     * Configura el listener para la selección de filas en la tabla,
+     * actualizando los campos de texto con los detalles de la orden seleccionada.
+     */
     private void configurarSeleccion() {
         tablaOrdenes.getSelectionModel().selectedItemProperty().addListener(
                 (obs, anterior, sel) -> {
@@ -148,6 +169,10 @@ public class ordenController {
                 });
     }
 
+    /**
+     * Configura el listener para el campo de búsqueda,
+     * aplicando el filtro en tiempo real.
+     */
     private void configurarBusqueda() {
         txtBuscar.textProperty().addListener((obs, ant, nuevo) -> {
             if (nuevo == null || nuevo.isBlank()) tablaOrdenes.setItems(listaOrdenes);
@@ -155,6 +180,11 @@ public class ordenController {
         });
     }
 
+    /**
+     * Aplica un filtro a la lista de órdenes basado en el texto de búsqueda.
+     *
+     * @param texto El texto a buscar.
+     */
     private void aplicarFiltro(String texto) {
         ObservableList<Orden> filtrada = FXCollections.observableArrayList();
         for (Orden o : listaOrdenes) {
@@ -167,6 +197,12 @@ public class ordenController {
         tablaOrdenes.setItems(filtrada);
     }
 
+    /**
+     * Maneja el evento de crear una nueva orden.
+     * Valida las instrucciones y crea la orden si es válido.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void crearOrden(ActionEvent event) {
         String inst = txtInstrucciones.getText().trim();
@@ -185,6 +221,12 @@ public class ordenController {
         }
     }
 
+    /**
+     * Maneja el evento de actualizar una orden seleccionada.
+     * Solo permite actualizar órdenes sin asignar.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void actualizarOrden(ActionEvent event) {
         Orden sel = tablaOrdenes.getSelectionModel().getSelectedItem();
@@ -211,6 +253,12 @@ public class ordenController {
         }
     }
 
+    /**
+     * Maneja el evento de eliminar una orden seleccionada.
+     * Solo permite eliminar órdenes sin asignar y requiere confirmación.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void eliminarOrden(ActionEvent event) {
         Orden sel = tablaOrdenes.getSelectionModel().getSelectedItem();
@@ -240,6 +288,12 @@ public class ordenController {
         });
     }
 
+    /**
+     * Maneja el evento de cerrar sesión.
+     * Limpia el usuario actual y regresa a la vista de login.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void cerrarSesion(ActionEvent event) {
         try {
@@ -271,6 +325,9 @@ public class ordenController {
         }
     }
 
+    /**
+     * Actualiza los contadores de órdenes por estado.
+     */
     private void actualizarContadores() {
         long total = listaOrdenes.size(), sin = 0, en = 0, fin = 0;
         for (Orden o : listaOrdenes) {
@@ -284,6 +341,9 @@ public class ordenController {
         lblFinalizadas.setText(String.valueOf(fin));
     }
 
+    /**
+     * Limpia los campos del formulario y la selección de la tabla.
+     */
     private void limpiarFormulario() {
         txtInstrucciones.clear();
         txtId.clear();
@@ -291,3 +351,4 @@ public class ordenController {
         tablaOrdenes.getSelectionModel().clearSelection();
     }
 }
+

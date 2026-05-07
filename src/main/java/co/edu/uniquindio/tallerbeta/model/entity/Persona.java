@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Clase base que representa a una persona en el sistema.
+ * Contiene atributos comunes como nombre y cédula.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

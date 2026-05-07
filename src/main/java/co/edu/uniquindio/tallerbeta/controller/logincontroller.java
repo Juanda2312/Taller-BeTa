@@ -12,6 +12,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para la vista de login.
+ * Maneja el inicio de sesión de clientes y la navegación al registro.
+ */
 public class logincontroller {
 
     private final ControladorPrincipal controladorPrincipal;
@@ -22,11 +26,20 @@ public class logincontroller {
     @FXML private PasswordField txtcontraseña;
     @FXML private TextField     txtcorreo;
 
+    /**
+     * Constructor que inicializa el controlador con el controlador principal y el servicio del taller.
+     */
     public logincontroller() {
         controladorPrincipal = ControladorPrincipal.getInstance();
         tallerServicio       = controladorPrincipal.getTallerServicio();
     }
 
+    /**
+     * Maneja el evento de iniciar sesión.
+     * Valida los campos, intenta iniciar sesión y cambia a la vista de órdenes si es exitoso.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void iniciarSesion(ActionEvent event) {
         String correo = txtcorreo.getText().trim();
@@ -45,11 +58,27 @@ public class logincontroller {
         }
     }
 
+    /**
+     * Maneja el evento de registrarse.
+     * Cambia a la vista de registro.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     void Registrarse(ActionEvent event) {
         cambiarEscena("registro.fxml", "Taller BeTa — Registro", btnregistrarse, 900, 600);
     }
 
+    /**
+     * Método auxiliar para cambiar de escena.
+     * Carga el FXML especificado y configura la nueva escena.
+     *
+     * @param fxml El archivo FXML a cargar.
+     * @param titulo El título de la nueva ventana.
+     * @param origen El botón que origina el cambio.
+     * @param ancho El ancho de la nueva escena.
+     * @param alto El alto de la nueva escena.
+     */
     private void cambiarEscena(String fxml, String titulo, Button origen,
                                double ancho, double alto) {
         try {
