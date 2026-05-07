@@ -67,7 +67,7 @@ public class ordenController {
                 super.updateItem(item, empty);
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
-                setStyle("-fx-text-fill: #6e7681; -fx-font-family: Consolas; -fx-font-size: 11;");
+                setStyle("-fx-text-fill: #0a0808; -fx-font-family: Consolas; -fx-font-size: 11;");
             }
         });
 
@@ -77,7 +77,7 @@ public class ordenController {
                 super.updateItem(item, empty);
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
-                setStyle("-fx-text-fill: #e6edf3; -fx-font-size: 12; -fx-font-family: Consolas;");
+                setStyle("-fx-text-fill: #0a0808; -fx-font-size: 12; -fx-font-family: Consolas;");
             }
         });
 
@@ -117,8 +117,8 @@ public class ordenController {
                 if (empty || item == null) { setText(null); setStyle(""); return; }
                 setText(item);
                 setStyle("—".equals(item)
-                        ? "-fx-text-fill: #30363d; -fx-font-family: Consolas; -fx-font-size: 12;"
-                        : "-fx-text-fill: #e6edf3; -fx-font-family: Consolas; -fx-font-size: 12; -fx-font-weight: bold;");
+                        ? "-fx-text-fill: #0a0808; -fx-font-family: Consolas; -fx-font-size: 12;"
+                        : "-fx-text-fill: #0a0808; -fx-font-family: Consolas; -fx-font-size: 12; -fx-font-weight: bold;");
             }
         });
     }
